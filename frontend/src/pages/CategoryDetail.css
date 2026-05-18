@@ -1,0 +1,86 @@
+.category-detail {
+  min-height: 100vh;
+  background-color: var(--color-white);
+  padding: 2rem 0;
+}
+
+.category-detail-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.category-detail-header {
+  margin-bottom: 3rem;
+}
+
+.category-detail-header .btn {
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+  font-size: 1.125rem;
+  color: var(--color-secondary);
+  margin: 0;
+}
+
+.projects-section {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.section-header {
+  margin-bottom: 2rem;
+}
+
+.section-header h2 {
+  font-size: 2rem;
+  color: var(--color-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.section-header p {
+  color: var(--color-secondary);
+  margin: 0;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  background-color: var(--color-lighter);
+  border-radius: var(--border-radius-lg);
+}
+
+.empty-state h3 {
+  color: var(--color-secondary);
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-state p {
+  color: var(--color-tertiary);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .category-detail-container {
+    padding: 0 1.25rem;
+  }
+
+  .page-title {
+    font-size: 1.75rem;
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.5rem;
+  }
+}
