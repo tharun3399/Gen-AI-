@@ -1,5 +1,27 @@
 import { Category, Project } from '../models/index.js';
 
+const normalizeProjectPayload = (body = {}) => {
+  const technologies = Array.isArray(body.technologies)
+    ? body.technologies
+    : typeof body.technologies === 'string'
+      ? body.technologies.split(',').map((tech) => tech.trim()).filter(Boolean)
+      : [];
+
+  return {
+    categoryId: Number.parseInt(body.categoryId, 10),
+    title: (body.title || '').trim(),
+    shortDescription: (body.shortDescription || '').trim(),
+    problemStatement: (body.problemStatement || '').trim(),
+    currentChallenges: (body.currentChallenges || '').trim(),
+    aiSolution: (body.aiSolution || '').trim(),
+    workflowImage: (body.workflowImage || '').trim(),
+    githubLink: (body.githubLink || '').trim(),
+    technologies,
+    benefits: (body.benefits || '').trim(),
+    futureImprovements: (body.futureImprovements || '').trim()
+  };
+};
+
 // Category Controllers
 export const getCategoryController = async (req, res) => {
   try {
@@ -109,20 +131,25 @@ export const getAllProjectsController = async (req, res) => {
 
 export const createProjectController = async (req, res) => {
   try {
-    const {
-      categoryId, title, shortDescription, problemStatement,
-      currentChallenges, aiSolution, workflowImage, githubLink,
-      technologies, benefits, futureImprovements
-    } = req.body;
+    const projectInput = normalizeProjectPayload(req.body);
 
-    if (!categoryId || !title || !shortDescription || !problemStatement) {
-      return res.status(400).json({ error: 'Missing required fields' });
+    if (!projectInput.categoryId || !projectInput.title || !projectInput.problemStatement) {
+      return res.status(400).json({
+        error: 'Missing required fields',
+        required: ['categoryId', 'title', 'problemStatement']
+      });
     }
 
     const project = await Project.createProject({
-      categoryId, title, shortDescription, problemStatement,
-      currentChallenges, aiSolution, workflowImage, githubLink,
-      technologies, benefits, futureImprovements
+      ...projectInput,
+      shortDescription: projectInput.shortDescription || '',
+      currentChallenges: projectInput.currentChallenges || '',
+      aiSolution: projectInput.aiSolution || '',
+      workflowImage: projectInput.workflowImage || '',
+      githubLink: projectInput.githubLink || '',
+      technologies: projectInput.technologies,
+      benefits: projectInput.benefits || '',
+      futureImprovements: projectInput.futureImprovements || ''
     });
 
     res.status(201).json(project);
@@ -134,16 +161,18 @@ export const createProjectController = async (req, res) => {
 export const updateProjectController = async (req, res) => {
   try {
     const { id } = req.params;
-    const {
-      categoryId, title, shortDescription, problemStatement,
-      currentChallenges, aiSolution, workflowImage, githubLink,
-      technologies, benefits, futureImprovements
-    } = req.body;
+    const projectInput = normalizeProjectPayload(req.body);
 
     const project = await Project.updateProject(id, {
-      categoryId, title, shortDescription, problemStatement,
-      currentChallenges, aiSolution, workflowImage, githubLink,
-      technologies, benefits, futureImprovements
+      ...projectInput,
+      shortDescription: projectInput.shortDescription || '',
+      currentChallenges: projectInput.currentChallenges || '',
+      aiSolution: projectInput.aiSolution || '',
+      workflowImage: projectInput.workflowImage || '',
+      githubLink: projectInput.githubLink || '',
+      technologies: projectInput.technologies,
+      benefits: projectInput.benefits || '',
+      futureImprovements: projectInput.futureImprovements || ''
     });
 
     if (!project) {
